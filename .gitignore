@@ -1,0 +1,5 @@
+*.exe
+.vscode
+.vs
+*.o
+*.pdb
