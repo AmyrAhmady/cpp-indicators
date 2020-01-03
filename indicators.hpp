@@ -58,19 +58,19 @@ public:
         is_active = true;
         std::cout.flush();
         last_text_size = 0;
+        if (type < 0 && type >= IndicatorFrames.size())
+            type = 0;
 
         thread = std::thread([&]() {
             int c = -1;
-            std::vector<std::string> frames;
-            if (custom_frames.size() > 0)
-                frames = custom_frames;
-            else
-                frames = IndicatorFrames[type];
+            const std::vector<std::string> &frames = (custom_frames.size() > 0) ? custom_frames
+                                                                                : IndicatorFrames[type];
             int l = frames.size();
 
             while (is_active)
             {
-                std::string frame = frames[c = ++c % l];
+                const std::string &frame = frames[c % l];
+                ++c;
                 std::cout << "\r" << prefix << frame << suffix;
                 last_text_size = prefix.length() + frame.length() + suffix.length();
                 std::cout.flush();
@@ -133,7 +133,6 @@ private:
     int last_text_size;
     bool hide_on_end;
     bool is_active;
-    std::mutex lock;
     std::thread thread;
 };
 } // namespace indicator
