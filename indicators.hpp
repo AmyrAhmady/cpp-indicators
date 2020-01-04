@@ -58,11 +58,11 @@ public:
         is_active = true;
         std::cout.flush();
         last_text_size = 0;
-        if (type < 0 && type >= IndicatorFrames.size())
+        if (type >= IndicatorFrames.size())
             type = 0;
 
         thread = std::thread([&]() {
-            int c = -1;
+            unsigned int c = 0;
             const std::vector<std::string> &frames = (custom_frames.size() > 0) ? custom_frames
                                                                                 : IndicatorFrames[type];
             int l = frames.size();
@@ -128,9 +128,9 @@ private:
     std::string prefix;
     std::string suffix;
     std::vector<std::string> custom_frames;
-    int type;
+    unsigned char type;
     std::string endmsg;
-    int last_text_size;
+    unsigned int last_text_size;
     bool hide_on_end;
     bool is_active;
     std::thread thread;
